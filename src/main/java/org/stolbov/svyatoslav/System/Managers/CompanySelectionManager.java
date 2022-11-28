@@ -22,8 +22,12 @@ public class CompanySelectionManager {
     private void initArrayOfDevice() {
         processingDevices = new ArrayList<ProcessingDevice>(processingDeviceCount);
         for (int i = 1; i <= processingDeviceCount; i++) {
-            processingDevices.add(new ProcessingDevice(i, null, false));
+            processingDevices.add(new ProcessingDevice(i, 0,0));
         }
+    }
+
+    public ArrayList<ProcessingDevice> getProcessingDevices() {
+        return processingDevices;
     }
 
 }

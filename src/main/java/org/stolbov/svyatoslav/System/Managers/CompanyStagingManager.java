@@ -27,4 +27,8 @@ public class CompanyStagingManager {
         }
     }
 
+    public ArrayList<HomeDevice> getHomeDevices() {
+        return homeDevices;
+    }
+
 }

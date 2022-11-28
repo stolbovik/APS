@@ -10,10 +10,10 @@ import lombok.ToString;
 @AllArgsConstructor
 public class HomeRequest {
 
-    public int sourceNum;
-    public int requestNum;
+    public long sourceNum;
+    public long requestNum;
     public double inBufferTime;
-    public double inDeviceTime;
+    public double unBufferTime;
     public double endTime;
 
 }

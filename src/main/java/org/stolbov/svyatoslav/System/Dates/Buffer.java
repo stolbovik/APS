@@ -17,7 +17,7 @@ public class Buffer {
 
     public Buffer(@NonNull final int size) {
         this.sizeBuffer = size;
-        buffer = new ArrayList<HomeRequest>(size);
+        buffer = new ArrayList<>(size);
         for (int i = 0; i < sizeBuffer; i++) {
             buffer.add(null);
         }
@@ -30,7 +30,7 @@ public class Buffer {
         return lastRequestIndex == -1;
     }
 
-    public Optional<HomeRequest> getRequest() {
+    public Optional<HomeRequest> getRequest(@NonNull double unBufferTime) {
         if (isEmpty()) {
             return Optional.empty();
         }
@@ -39,20 +39,24 @@ public class Buffer {
         lastRequestIndex = getNewLastRequestIndex();
         firstFreeIndex = getNewFirstFreeIndex();
         oldestRequestIndex = getNewOldestRequestIndex();
+        answer.ifPresent(homeRequest -> homeRequest.setUnBufferTime(unBufferTime));
         return answer;
     }
 
-    public void addRequest(HomeRequest homeRequest) {
+    public void addRequest(@NonNull HomeRequest homeRequest,
+                           @NonNull double inBufferTime) {
         if (firstFreeIndex == -1) {
             buffer.set(oldestRequestIndex, homeRequest);
             lastRequestIndex = oldestRequestIndex;
             oldestRequestIndex = getNewOldestRequestIndex();
+            homeRequest.setInBufferTime(inBufferTime);
             return;
         }
         buffer.set(firstFreeIndex, homeRequest);
         lastRequestIndex = firstFreeIndex;
         oldestRequestIndex = getNewOldestRequestIndex();
         firstFreeIndex = getNewFirstFreeIndex();
+        homeRequest.setInBufferTime(inBufferTime);
     }
 
     private int getNewOldestRequestIndex() {

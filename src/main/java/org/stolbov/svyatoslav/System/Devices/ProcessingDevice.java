@@ -1,17 +1,43 @@
 package org.stolbov.svyatoslav.System.Devices;
-
-import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import org.stolbov.svyatoslav.System.Dates.HomeRequest;
 
-@AllArgsConstructor
+@Setter
+@Getter
 public class ProcessingDevice {
 
-    private int deviceNum;
+    private long deviceNum;
     private HomeRequest homeRequestNow;
-    private boolean status;
+    private long minTime;
+    private long maxTime;
+    private double startTimeHomeRequest;
 
-    public boolean getStatus() {
-        return status;
+    public ProcessingDevice(@NonNull long deviceNum,
+                            @NonNull long minTime,
+                            @NonNull long maxTime) {
+        this.deviceNum = deviceNum;
+        this.minTime = minTime;
+        this.maxTime = maxTime;
+        this.homeRequestNow = null;
+        this.startTimeHomeRequest = 0;
+    }
+
+    public double setHomeRequest(@NonNull HomeRequest homeRequest,
+                                 double startTimeHomeRequest) {
+        this.startTimeHomeRequest = startTimeHomeRequest;
+        this.homeRequestNow = homeRequest;
+        this.homeRequestNow.setUnBufferTime(startTimeHomeRequest);
+        double temp = 0.0;
+        while (temp == 0.0) {
+            temp = Math.random();
+        }
+        return temp * minTime;
+    }
+
+    public boolean isFree() {
+        return homeRequestNow == null;
     }
 
 }
