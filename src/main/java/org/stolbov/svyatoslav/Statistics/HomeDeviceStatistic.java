@@ -7,20 +7,26 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class HomeDeviceStatistic {
 
     private long countAllTasks;
-    private long countCompleteTasks;
+    private long countCanceledTasks;
     private long totalTime;
     private long bufferTime;
+
+    public HomeDeviceStatistic() {
+        this.bufferTime = 0;
+        this.totalTime = 0;
+        this.countCanceledTasks = 0;
+        this.countAllTasks = 0;
+    }
 
     public void addCountAllTasks() {
         this.countAllTasks++;
     }
 
-    public void addCountCompleteTasks() {
-        this.countCompleteTasks++;
+    public void addCountCanceledTasks() {
+        this.countCanceledTasks++;
     }
 
     public void addTotalTime(@NonNull double time) {

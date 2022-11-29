@@ -33,7 +33,7 @@ public class ProcessingDevice {
         while (temp == 0.0) {
             temp = Math.random();
         }
-        return temp * minTime;
+        return temp * this.minTime;
     }
 
     public boolean isFree() {

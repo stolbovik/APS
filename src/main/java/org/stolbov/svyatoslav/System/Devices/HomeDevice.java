@@ -20,11 +20,15 @@ public class HomeDevice {
         this.timeNextHomeRequest = getLaplassNumber(this.lambda);
     }
 
-    public HomeRequest getNewHomeRequest() {
-        double temp = this.timeNextHomeRequest;
-        this.timeNextHomeRequest += getLaplassNumber(this.lambda);
+    public HomeRequest getNewHomeRequest(double time) {
         this.countGeneratedHomeRequest++;
-        return new HomeRequest(this.sourceNum, this.countGeneratedHomeRequest, temp, 0, 0);
+        return new HomeRequest(this.sourceNum, this.countGeneratedHomeRequest, time, 0, 0);
+    }
+
+    public double getTimeNextHomeRequest() {
+        double temp = this.timeNextHomeRequest;
+        timeNextHomeRequest += getLaplassNumber(this.lambda);
+        return temp;
     }
 
     private double getLaplassNumber(double lambda) {
