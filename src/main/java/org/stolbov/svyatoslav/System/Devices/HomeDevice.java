@@ -1,6 +1,7 @@
 package org.stolbov.svyatoslav.System.Devices;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.stolbov.svyatoslav.System.Dates.HomeRequest;
 
@@ -8,34 +9,32 @@ import org.stolbov.svyatoslav.System.Dates.HomeRequest;
 @Setter
 public class HomeDevice {
 
-    private final long sourceNum;
+    private final int sourceNum;
     private final double lambda;
-    private long countGeneratedHomeRequest;
-    private double timeNextHomeRequest;
+    private int countGeneratedHomeRequest;
 
-    public HomeDevice(int sourceNum, int lambda) {
+    public HomeDevice(int sourceNum,
+                      double lambda) {
         this.sourceNum = sourceNum;
         this.lambda = lambda;
         this.countGeneratedHomeRequest = 0;
-        this.timeNextHomeRequest = getLaplassNumber(this.lambda);
     }
 
     public HomeRequest getNewHomeRequest(double time) {
+        HomeRequest homeRequest = new HomeRequest(this.sourceNum, this.countGeneratedHomeRequest, time);
         this.countGeneratedHomeRequest++;
-        return new HomeRequest(this.sourceNum, this.countGeneratedHomeRequest, time, 0, 0);
+        return homeRequest;
     }
 
     public double getTimeNextHomeRequest() {
-        double temp = this.timeNextHomeRequest;
-        timeNextHomeRequest += getLaplassNumber(this.lambda);
-        return temp;
+        return getLaplassNumber();
     }
 
-    private double getLaplassNumber(double lambda) {
+    private double getLaplassNumber() {
         double temp = 0.0;
         while (temp == 0.0) {
             temp = Math.random();
         }
-        return -1.0/lambda * Math.log(temp);
+        return -1.0/this.lambda * Math.log(temp);
     }
 }

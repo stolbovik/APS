@@ -1,10 +1,8 @@
 package org.stolbov.svyatoslav.System.Managers;
 
-import lombok.Getter;
 import lombok.NonNull;
 import org.stolbov.svyatoslav.System.Dates.Buffer;
 import org.stolbov.svyatoslav.System.Devices.HomeDevice;
-import org.stolbov.svyatoslav.System.Devices.ProcessingDevice;
 
 import java.util.ArrayList;
 
@@ -14,21 +12,31 @@ public class CompanyStagingManager {
     private final int homeDeviceCount;
     private ArrayList<HomeDevice> homeDevices;
 
-    public CompanyStagingManager(@NonNull Buffer buffer,
-                                 @NonNull int homeDeviceCount) {
+    public CompanyStagingManager(Buffer buffer,
+                                 int homeDeviceCount,
+                                 double lambda) {
         this.buffer = buffer;
         this.homeDeviceCount = homeDeviceCount;
+        initArrayOfDevice(lambda);
     }
 
-    private void initArrayOfDevice() {
-        homeDevices = new ArrayList<HomeDevice>(homeDeviceCount);
-        for (int i = 1; i <= homeDeviceCount; i++) {
-            homeDevices.add(new HomeDevice(i, 0));
+    private void initArrayOfDevice(double lambda) {
+        homeDevices = new ArrayList<>(homeDeviceCount);
+        for (int i = 0; i < homeDeviceCount; i++) {
+            homeDevices.add(new HomeDevice(i, lambda));
         }
     }
 
     public ArrayList<HomeDevice> getHomeDevices() {
         return homeDevices;
+    }
+
+    public HomeDevice getHomeDevice(int i) {
+        return this.homeDevices.get(i);
+    }
+
+    public int indexOf(HomeDevice homeDevice) {
+        return homeDevices.indexOf(homeDevice);
     }
 
 }

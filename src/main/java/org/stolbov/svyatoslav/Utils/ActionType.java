@@ -4,6 +4,6 @@ public enum ActionType {
 
     NEW_REQUEST,
     REQUEST_OUT_BUFFER,
-    TASK_COMPLETE;
+    REQUEST_COMPLETE;
 
 }

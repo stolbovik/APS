@@ -1,12 +1,8 @@
 package org.stolbov.svyatoslav.Statistics;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ProcessingDeviceStatistic {
 
     private double workTime;
@@ -15,7 +11,7 @@ public class ProcessingDeviceStatistic {
         this.workTime = 0;
     }
 
-    public void addWorkTime(@NonNull double time) {
+    public void addWorkTime(double time) {
         workTime += time;
     }
 

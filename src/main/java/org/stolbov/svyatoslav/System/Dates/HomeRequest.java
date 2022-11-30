@@ -5,15 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
 @ToString
 @AllArgsConstructor
 public class HomeRequest {
 
-    public long sourceNum;
-    public long requestNum;
-    public double inBufferTime;
-    public double unBufferTime;
-    public double endTime;
+    public int sourceNum;
+    public int requestNum;
+    public double generatedTime;
 
 }

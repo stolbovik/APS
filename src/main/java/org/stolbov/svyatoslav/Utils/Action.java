@@ -7,30 +7,40 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class Action implements Comparable<Action>{
 
     private ActionType actionType;
     private double actionTime;
-    private long sourceOrDeviceNum;
+    private int sourceOrDeviceNum;
 
-    public Action(@NonNull ActionType actionType,
-                  @NonNull double actionTime) {
+    public Action(ActionType actionType,
+                  double actionTime) {
         this.actionTime = actionTime;
         this.actionType = actionType;
-        this.sourceOrDeviceNum = 0;
+        this.sourceOrDeviceNum = -1;
+    }
+
+    public Action(ActionType actionType,
+                  double actionTime,
+                  int sourceOrDeviceNum) {
+        this.actionTime = actionTime;
+        this.actionType = actionType;
+        this.sourceOrDeviceNum = sourceOrDeviceNum;
     }
 
     @Override
     public int compareTo(Action temp) {
-        if (this.actionTime > temp.getActionTime())  {
-            return 1;
-        }
         if (this.actionTime < temp.getActionTime()) {
             return -1;
         }
-        if (this.getActionType().ordinal() > temp.getActionType().ordinal()) {
+        if (this.actionTime > temp.getActionTime())  {
+            return 1;
+        }
+        if (this.actionType.ordinal() > temp.getActionType().ordinal()) {
             return -1;
+        }
+        if (this.actionType.ordinal() < temp.getActionType().ordinal()) {
+            return 1;
         }
         return 0;
     }

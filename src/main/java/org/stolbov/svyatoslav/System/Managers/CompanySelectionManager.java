@@ -1,6 +1,5 @@
 package org.stolbov.svyatoslav.System.Managers;
 
-import lombok.NonNull;
 import org.stolbov.svyatoslav.System.Dates.Buffer;
 import org.stolbov.svyatoslav.System.Devices.ProcessingDevice;
 
@@ -12,22 +11,41 @@ public class CompanySelectionManager {
     private final int processingDeviceCount;
     private ArrayList<ProcessingDevice> processingDevices;
 
-    public CompanySelectionManager(@NonNull Buffer buffer,
-                                   @NonNull int processingDeviceCount) {
+    public CompanySelectionManager(Buffer buffer,
+                                   int processingDeviceCount,
+                                   int minTime,
+                                   int maxTime) {
         this.buffer = buffer;
         this.processingDeviceCount = processingDeviceCount;
-        initArrayOfDevice();
+        initArrayOfDevice(minTime, maxTime);
     }
 
-    private void initArrayOfDevice() {
-        processingDevices = new ArrayList<ProcessingDevice>(processingDeviceCount);
-        for (int i = 1; i <= processingDeviceCount; i++) {
-            processingDevices.add(new ProcessingDevice(i, 0,0));
+    private void initArrayOfDevice(int minTime, int maxTime) {
+        processingDevices = new ArrayList<>(processingDeviceCount);
+        for (int i = 0; i < processingDeviceCount; i++) {
+            processingDevices.add(new ProcessingDevice(i, minTime,maxTime));
         }
     }
 
     public ArrayList<ProcessingDevice> getProcessingDevices() {
         return processingDevices;
     }
+
+    public ProcessingDevice getProcessingDevice(int i) {
+        return this.processingDevices.get(i);
+    }
+
+    public int indexOf(ProcessingDevice processingDevice) {
+        return processingDevices.indexOf(processingDevice);
+    }
+
+    public int findFirstFreeProcessingDevice() {
+        for (int i = 0; i < processingDeviceCount; i++) {
+            if (this.getProcessingDevice(i).isFree()) {
+                return this.getProcessingDevice(i).getDeviceNum();
+            }
+        }
+        return -1;
+    };
 
 }

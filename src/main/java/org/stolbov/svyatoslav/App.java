@@ -1,16 +1,18 @@
 package org.stolbov.svyatoslav;
 
-import org.stolbov.svyatoslav.System.Dates.Buffer;
-import org.stolbov.svyatoslav.System.Dates.HomeRequest;
+
+import org.stolbov.svyatoslav.GUI.UI;
 
 public class App
 {
-    public static void main( String[] args )
-    {
-        Buffer buffer = new Buffer(5);
+    public static void main( String[] args ) throws InterruptedException {
+        UI ui = new UI();
+        ui.execute();
+
+        /*Buffer buffer = new Buffer(5);
         double time = 0;
         for (int i = 0; i < 31; i++) {
-            buffer.addRequest(new HomeRequest(1, i, time, 0, 0));
+            buffer.addRequest(new HomeRequest(1, i, time), );
             for(int j = 0; j < buffer.getSizeBuffer(); j++) {
                 System.out.println(j + " " + buffer.getBuffer().get(j));
             }
@@ -51,6 +53,6 @@ public class App
             System.out.println(j + " " + buffer.getBuffer().get(j));
         }
         System.out.println("free: " + buffer.getFirstFreeIndex() +
-                "\nlast: " + buffer.getLastRequestIndex() + "\noldest: " + buffer.getOldestRequestIndex());
+                "\nlast: " + buffer.getLastRequestIndex() + "\noldest: " + buffer.getOldestRequestIndex());*/
     }
 }

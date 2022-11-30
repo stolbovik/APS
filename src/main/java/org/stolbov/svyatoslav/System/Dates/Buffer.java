@@ -1,7 +1,7 @@
 package org.stolbov.svyatoslav.System.Dates;
 
 import lombok.Getter;
-import lombok.NonNull;
+import org.stolbov.svyatoslav.Statistics.StatisticController;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -15,7 +15,7 @@ public class Buffer {
     private int firstFreeIndex;
     private int lastRequestIndex;
 
-    public Buffer(@NonNull final int size) {
+    public Buffer(int size) {
         this.sizeBuffer = size;
         buffer = new ArrayList<>(size);
         for (int i = 0; i < sizeBuffer; i++) {
@@ -30,41 +30,43 @@ public class Buffer {
         return lastRequestIndex == -1;
     }
 
-    public Optional<HomeRequest> getRequest(@NonNull double unBufferTime) {
-        if (isEmpty()) {
-            return Optional.empty();
-        }
-        Optional<HomeRequest> answer = Optional.of(buffer.get(lastRequestIndex));
-        buffer.set(lastRequestIndex, null);
-        lastRequestIndex = getNewLastRequestIndex();
-        firstFreeIndex = getNewFirstFreeIndex();
-        oldestRequestIndex = getNewOldestRequestIndex();
-        answer.ifPresent(homeRequest -> homeRequest.setUnBufferTime(unBufferTime));
-        return answer;
-    }
-
-    public void addRequest(@NonNull HomeRequest homeRequest,
-                           @NonNull double inBufferTime) {
+    public void addRequest(HomeRequest homeRequest,
+                           StatisticController statisticController) {
         if (firstFreeIndex == -1) {
+            HomeRequest homeRequest1 = buffer.get(oldestRequestIndex);
+            statisticController.cancelHomeRequest(homeRequest1.getSourceNum(), homeRequest.getGeneratedTime() - homeRequest1.getGeneratedTime());
             buffer.set(oldestRequestIndex, homeRequest);
             lastRequestIndex = oldestRequestIndex;
             oldestRequestIndex = getNewOldestRequestIndex();
-            homeRequest.setInBufferTime(inBufferTime);
             return;
         }
         buffer.set(firstFreeIndex, homeRequest);
         lastRequestIndex = firstFreeIndex;
         oldestRequestIndex = getNewOldestRequestIndex();
         firstFreeIndex = getNewFirstFreeIndex();
-        homeRequest.setInBufferTime(inBufferTime);
+    }
+
+    public HomeRequest getRequest() {
+        if (isEmpty()) {
+            throw new RuntimeException("Buffer is empty. Can not receive task");
+        }
+        HomeRequest answer = buffer.get(lastRequestIndex);
+        buffer.set(lastRequestIndex, null);
+        lastRequestIndex = getNewLastRequestIndex();
+        firstFreeIndex = getNewFirstFreeIndex();
+        oldestRequestIndex = getNewOldestRequestIndex();
+        return answer;
     }
 
     private int getNewOldestRequestIndex() {
+        if (isEmpty()) {
+            return -1;
+        }
         int answerIndex = -1;
-        double temp = -1;
+        double temp = -1.0;
         for (int i = 0; i < sizeBuffer; i++) {
-            if (buffer.get(i) != null && (temp == -1 || temp >= buffer.get(i).getInBufferTime())) {
-                temp = buffer.get(i).getInBufferTime();
+            if (buffer.get(i) != null && (temp == -1.0 || temp > buffer.get(i).getGeneratedTime())) {
+                temp = buffer.get(i).getGeneratedTime();
                 answerIndex = i;
             }
         }
@@ -84,8 +86,8 @@ public class Buffer {
         int answerIndex = -1;
         double temp = -1.0;
         for (int i = 0; i < sizeBuffer; i++) {
-            if (buffer.get(i) != null && (temp == -1 || temp < buffer.get(i).getInBufferTime())) {
-                temp = buffer.get(i).getInBufferTime();
+            if (buffer.get(i) != null && (temp == -1.0 || temp < buffer.get(i).getGeneratedTime())) {
+                temp = buffer.get(i).getGeneratedTime();
                 answerIndex = i;
             }
         }
