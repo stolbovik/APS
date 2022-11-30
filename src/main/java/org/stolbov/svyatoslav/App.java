@@ -1,7 +1,7 @@
 package org.stolbov.svyatoslav;
 
 
-import org.stolbov.svyatoslav.GUI.UI;
+import org.stolbov.svyatoslav.UI.UI;
 
 public class App
 {
