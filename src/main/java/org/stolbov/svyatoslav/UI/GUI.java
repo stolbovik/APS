@@ -95,33 +95,23 @@ class GUI extends JPanel
         this.paint(g);
         List<ProcessingDevice> d = generalSystem.getCompanySelectionManager().getProcessingDevices();
         Buffer b = generalSystem.getBuffer();
-
-/*        String current;
-        String oldestTRequest;*/
         Action action = UI.NextStepAction.action;
 
         if (action.getActionType() == ActionType.NEW_REQUEST)
         {
-/*            current = String.valueOf(action.getSourceOrDeviceNum()) + "." + String
-                    .valueOf(statisticController.getHomeDeviceStatistics()
-                            .get(action.getSourceOrDeviceNum())
-                            .getCountAllGeneratedHomeRequests() - 1
-                    );
-            oldestTRequest = String.valueOf(generalSystem.getBuffer().getBuffer()
-                    .get(generalSystem.getBuffer().getOldestRequestIndex()).getSourceNum()) + "." +
-                    String.valueOf(generalSystem.getBuffer().getBuffer()
-                            .get(generalSystem.getBuffer().getOldestRequestIndex()).getRequestNum());*/
             if (prevFirstFreeIndex == -1) {
                 g.setColor(Color.red);
                 g.fillRect(181, 191, 99, 29);
                 g.setColor(Color.black);
                 g.drawString(oldestRequest, 210, 210);
             }
-            else {
-                g.setColor(Color.yellow);
+            g.setColor(Color.yellow);
+            if (b.getFirstFreeIndex() == -1) {
+                g.fillRect(311, 11 + (b.getLastRequestIndex() + 1) * 50, 99, 29);
+            } else {
                 g.fillRect(311, 11 + (b.getFirstFreeIndex()) * 50, 99, 29);
-                g.setColor(Color.black);
             }
+            g.setColor(Color.black);
             g.drawString(currentRequest, 220, 30);
         }
 

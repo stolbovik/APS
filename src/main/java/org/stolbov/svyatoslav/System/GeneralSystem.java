@@ -94,14 +94,6 @@ public class GeneralSystem {
         }
         else if (actionType == ActionType.REQUEST_COMPLETE) {
             ProcessingDevice currentProcessingDevice = companySelectionManager.getProcessingDevice(sourceOrDeviceNum);
-/*            Iterator<ProcessingDevice> it = companySelectionManager.getProcessingDevices().iterator();
-            while (it.hasNext()) {
-                ProcessingDevice temp = it.next();
-                if (temp.getDeviceNum() == sourceOrDeviceNum) {
-                    currentProcessingDevice = temp;
-                    break;
-                }
-            }*/
             companySelectionManager.getProcessingDevices().set(sourceOrDeviceNum, null);
             statisticController.completeHomeRequest(currentProcessingDevice.getHomeRequestNow().getSourceNum(), sourceOrDeviceNum,
                     this.timeNow - currentProcessingDevice.getHomeRequestNow().getGeneratedTime(),

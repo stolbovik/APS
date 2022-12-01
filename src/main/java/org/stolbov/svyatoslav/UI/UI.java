@@ -35,7 +35,7 @@ public class UI {
         @Override
         public void actionPerformed(ActionEvent e) {
             generalSystem = new GeneralSystem(Integer.parseInt(startDataFields.get(1).getText()),
-                                              Integer.parseInt(startDataFields.get(0).getText()),
+                    Integer.parseInt(startDataFields.get(0).getText()),
                     Integer.parseInt(startDataFields.get(3).getText()),
                     Double.parseDouble(startDataFields.get(6).getText()),
                     Integer.parseInt(startDataFields.get(5).getText()),

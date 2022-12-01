@@ -4,8 +4,6 @@ import lombok.Getter;
 import org.stolbov.svyatoslav.Statistics.StatisticController;
 
 import java.util.ArrayList;
-import java.util.Optional;
-
 @Getter
 public class Buffer {
 
