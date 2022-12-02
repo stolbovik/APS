@@ -13,7 +13,7 @@ public class StatisticController {
     private int sizeOfBuffer;
     private int countSubmittedRequest;
     private int countCompletedRequest;
-    private double totalTime;
+/*    private double totalTime;*/
     private ArrayList<HomeDeviceStatistic> homeDeviceStatistics;
     private ArrayList<ProcessingDeviceStatistic> processingDeviceStatistics;
 
@@ -28,7 +28,7 @@ public class StatisticController {
         this.countRequiredRequest = countRequiredRequest;
         this.countSubmittedRequest = 0;
         this.countCompletedRequest = 0;
-        this.totalTime = totalTime;
+/*        this.totalTime = totalTime;*/
         this.homeDeviceStatistics = new ArrayList<>(homeDeviceCount);
         for (int i = 0; i < homeDeviceCount; i++) {
             this.homeDeviceStatistics.add(new HomeDeviceStatistic());

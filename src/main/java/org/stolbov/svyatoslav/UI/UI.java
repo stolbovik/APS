@@ -4,6 +4,8 @@ import org.stolbov.svyatoslav.Statistics.HomeDeviceStatistic;
 import org.stolbov.svyatoslav.Statistics.StatisticController;
 import org.stolbov.svyatoslav.System.GeneralSystem;
 import org.stolbov.svyatoslav.Utils.Action;
+import org.stolbov.svyatoslav.Utils.ActionType;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -80,15 +82,22 @@ public class UI {
             }
             GUI.prevFirstFreeIndex = generalSystem.getBuffer().getFirstFreeIndex();
             if (generalSystem.getBuffer().getOldestRequestIndex()!= -1) {
-                GUI.oldestRequest = String.valueOf(generalSystem.getBuffer().getBuffer()
-                        .get(generalSystem.getBuffer().getOldestRequestIndex()).getSourceNum()) + "." +
-                        String.valueOf(generalSystem.getBuffer().getBuffer()
-                                .get(generalSystem.getBuffer().getOldestRequestIndex()).getRequestNum());
+                GUI.oldestRequest = generalSystem.getBuffer().getBuffer()
+                        .get(generalSystem.getBuffer().getOldestRequestIndex()).getHomeDeviceNum() + "."
+                        + generalSystem.getBuffer().getBuffer().get(generalSystem.getBuffer()
+                        .getOldestRequestIndex()).getRequestNum();
+            }
+            if (generalSystem.getNextAction().getActionType() == ActionType.REQUEST_COMPLETE) {
+                GUI.completeRequest = generalSystem.getCompanySelectionManager()
+                        .getProcessingDevice(generalSystem.getNextAction().getSourceOrDeviceNum()).getHomeRequestNow()
+                        .getHomeDeviceNum() + "." + generalSystem.getCompanySelectionManager()
+                        .getProcessingDevice(generalSystem.getNextAction().getSourceOrDeviceNum()).getHomeRequestNow()
+                        .getRequestNum();
             }
             if (temp != 0) {
                 action = generalSystem.startAction();
             }
-            if (action.getSourceOrDeviceNum() != -1) {
+            if (action.getSourceOrDeviceNum() != -1 ) {
                 GUI.currentRequest = String.valueOf(action.getSourceOrDeviceNum()) + "." + String
                         .valueOf(statisticController.getHomeDeviceStatistics()
                                 .get(action.getSourceOrDeviceNum())
@@ -146,7 +155,7 @@ public class UI {
         panel.add(text1);
 
         panel.add(label2);
-        JTextField text2 = new JTextField("50", 20);
+        JTextField text2 = new JTextField("10", 20);
         panel.add(text2);
 
         panel.add(label3);
@@ -158,11 +167,11 @@ public class UI {
         panel.add(text4);
 
         panel.add(label5);
-        JTextField text5 = new JTextField("6", 20);
+        JTextField text5 = new JTextField("0", 20);
         panel.add(text5);
 
         panel.add(label6);
-        JTextField text6 = new JTextField("7", 20);
+        JTextField text6 = new JTextField("1", 20);
         panel.add(text6);
 
         panel.add(label7);
@@ -217,19 +226,20 @@ public class UI {
     private JFrame getAutoModeFrame()
     {
         JFrame frame = getFrame("Автоматический режим");
-        String[] columnNames = {"Количество действий", "Вероятность отказа", "Полное время в системе",
+        String[] columnNames = {"Источника", "Количество действий", "Вероятность отказа", "Полное время в системе",
                 "Время в буффере", "Дисперсия буффера", "Дисперсия всего времени"};
 
-        String data[][] = new String[generalSystem.getHomeDeviceCount()][6];
+        String data[][] = new String[generalSystem.getHomeDeviceCount()][7];
         int i = 0;
         for (HomeDeviceStatistic s: statisticController.getHomeDeviceStatistics())
         {
-            data[i][0] = String.valueOf(s.getCountAllGeneratedHomeRequests());
-            data[i][1] = String.valueOf((double)s.getCountAllCanceledHomeRequests() / s.getCountAllGeneratedHomeRequests());
-            data[i][2] = String.valueOf(s.getTotalTime());
-            data[i][3] = String.valueOf(s.getTotalBufferTime());
-            data[i][4] = String.valueOf(s.getBufferTimeDispersion());
-            data[i][5] = String.valueOf(s.getTotalTimeDispersion());
+            data[i][0] = String.valueOf(i);
+            data[i][1] = String.valueOf(s.getCountAllGeneratedHomeRequests());
+            data[i][2] = String.valueOf((double)s.getCountAllCanceledHomeRequests() / s.getCountAllGeneratedHomeRequests());
+            data[i][3] = String.valueOf(s.getTotalTime());
+            data[i][4] = String.valueOf(s.getTotalBufferTime());
+            data[i][5] = String.valueOf(s.getBufferTimeDispersion());
+            data[i][6] = String.valueOf(s.getTotalTimeDispersion());
             i++;
         }
         JTable table = new JTable(data, columnNames);

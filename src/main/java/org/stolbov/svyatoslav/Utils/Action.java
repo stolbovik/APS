@@ -36,12 +36,6 @@ public class Action implements Comparable<Action>{
         if (this.actionTime > temp.getActionTime())  {
             return 1;
         }
-        if (this.actionType.ordinal() > temp.getActionType().ordinal()) {
-            return -1;
-        }
-        if (this.actionType.ordinal() < temp.getActionType().ordinal()) {
-            return 1;
-        }
-        return 0;
+        return this.actionType.compareTo(temp.getActionType());
     }
 }

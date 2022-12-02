@@ -35,8 +35,4 @@ public class CompanyStagingManager {
         return this.homeDevices.get(i);
     }
 
-    public int indexOf(HomeDevice homeDevice) {
-        return homeDevices.indexOf(homeDevice);
-    }
-
 }

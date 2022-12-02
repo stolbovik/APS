@@ -28,7 +28,6 @@ public class GeneralSystem {
     private int minTime;
     private int maxTime;
     private int bufferSize;
-    private int currentProcessingDevicePosition;
 
     public GeneralSystem(int homeDeviceCount,
                          int processingDeviceCount,
@@ -44,7 +43,6 @@ public class GeneralSystem {
         this.maxTime = maxTime;
         this.minTime = minTime;
         this.timeNow = 0;
-        this.currentProcessingDevicePosition = -1;
         this.bufferSize = bufferSize;
         this.buffer = new Buffer(bufferSize);
         this.companySelectionManager = new CompanySelectionManager(this.buffer, processingDeviceCount, this.minTime, this.maxTime);
@@ -63,42 +61,64 @@ public class GeneralSystem {
         }
     };
 
+    public Action getNextAction() {
+        return actions.get(1);
+    }
+
     public Action startAction() {
         Action action = actions.remove(0);
         this.timeNow = action.getActionTime();
         ActionType actionType = action.getActionType();
         int sourceOrDeviceNum = action.getSourceOrDeviceNum();
         if (actionType == ActionType.NEW_REQUEST) {
+
             if (statisticController.getCountSubmittedRequest() < statisticController.getCountRequiredRequest()) {
-                buffer.addRequest(companyStagingManager.getHomeDevice(sourceOrDeviceNum).getNewHomeRequest(this.timeNow), this.statisticController);
+
+                HomeRequest homeRequest = companyStagingManager.getHomeDevice(sourceOrDeviceNum).getNewHomeRequest(this.timeNow);
+
+                System.out.println("\nType: " + action.getActionType() +
+                        "\nTime: " + action.getActionTime() +
+                        "\nSourceRequestNum: " + homeRequest.getHomeDeviceNum() + "." + homeRequest.getRequestNum() + "\n");
+
+                buffer.addRequest(homeRequest, this.statisticController);
                 actions.add(new Action(ActionType.NEW_REQUEST, this.timeNow +
                         companyStagingManager.getHomeDevice(sourceOrDeviceNum).getTimeNextHomeRequest(), sourceOrDeviceNum));
-                actions.add(new Action(ActionType.REQUEST_OUT_BUFFER, this.timeNow));
-                statisticController.addHomeRequest(sourceOrDeviceNum);
-                if (actions.size() > 0) {
-                    actions.sort(Action::compareTo);
+                if (companySelectionManager.findFirstFreeProcessingDevice() != -1) {
+                        actions.add(new Action(ActionType.REQUEST_OUT_BUFFER, this.timeNow));
                 }
+                statisticController.addHomeRequest(sourceOrDeviceNum);
+                actions.sort(Action::compareTo);
             }
         }
         else if (actionType == ActionType.REQUEST_OUT_BUFFER) {
             int freeDeviceID = companySelectionManager.findFirstFreeProcessingDevice();
             if (freeDeviceID != -1 && !buffer.isEmpty()) {
-                this.currentProcessingDevicePosition = freeDeviceID;
-                ProcessingDevice currentProcessingDevice = companySelectionManager.getProcessingDevice(this.currentProcessingDevicePosition);
-                companySelectionManager.getProcessingDevices().set(this.currentProcessingDevicePosition, null);
+                ProcessingDevice currentProcessingDevice = companySelectionManager.getProcessingDevice(freeDeviceID);
+
+                System.out.println("\nType: " + action.getActionType() +
+                        "\nTime: " + action.getActionTime() +
+                        "\nFreeDevice: " + currentProcessingDevice.getDeviceNum() + "\n");
+
+                companySelectionManager.getProcessingDevices().set(freeDeviceID, null);
                 HomeRequest homeRequest = buffer.getRequest();
                 actions.add(new Action(ActionType.REQUEST_COMPLETE, this.timeNow + currentProcessingDevice.setHomeRequest(homeRequest, this.timeNow), currentProcessingDevice.getDeviceNum()));
+                companySelectionManager.getProcessingDevices().set(freeDeviceID, currentProcessingDevice);
                 actions.sort(Action::compareTo);
-                companySelectionManager.getProcessingDevices().set(this.currentProcessingDevicePosition, currentProcessingDevice);
             }
         }
         else if (actionType == ActionType.REQUEST_COMPLETE) {
             ProcessingDevice currentProcessingDevice = companySelectionManager.getProcessingDevice(sourceOrDeviceNum);
+
+            System.out.println("\nType: " + action.getActionType() +
+                    "\nTime: " + action.getActionTime() +
+                    "\nDeviceAndRequest: " + currentProcessingDevice.getDeviceNum() + " "
+                    + currentProcessingDevice.getHomeRequestNow().getHomeDeviceNum() + "." + currentProcessingDevice.getHomeRequestNow().getRequestNum() + "\n");
+
             companySelectionManager.getProcessingDevices().set(sourceOrDeviceNum, null);
-            statisticController.completeHomeRequest(currentProcessingDevice.getHomeRequestNow().getSourceNum(), sourceOrDeviceNum,
+            statisticController.completeHomeRequest(currentProcessingDevice.getHomeRequestNow().getHomeDeviceNum(), sourceOrDeviceNum,
                     this.timeNow - currentProcessingDevice.getHomeRequestNow().getGeneratedTime(),
                     this.timeNow - currentProcessingDevice.getStartTimeHomeRequest());
-            currentProcessingDevice.setHomeRequest(null, this.timeNow);
+            currentProcessingDevice.setHomeRequest(null, 0);
             companySelectionManager.getProcessingDevices().set(sourceOrDeviceNum, currentProcessingDevice);
             actions.add(new Action(ActionType.REQUEST_OUT_BUFFER, this.timeNow));
             actions.sort(Action::compareTo);

@@ -35,10 +35,6 @@ public class CompanySelectionManager {
         return this.processingDevices.get(i);
     }
 
-    public int indexOf(ProcessingDevice processingDevice) {
-        return processingDevices.indexOf(processingDevice);
-    }
-
     public int findFirstFreeProcessingDevice() {
         for (int i = 0; i < processingDeviceCount; i++) {
             if (this.getProcessingDevice(i).isFree()) {

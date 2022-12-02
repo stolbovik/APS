@@ -32,7 +32,7 @@ public class Buffer {
                            StatisticController statisticController) {
         if (firstFreeIndex == -1) {
             HomeRequest homeRequest1 = buffer.get(oldestRequestIndex);
-            statisticController.cancelHomeRequest(homeRequest1.getSourceNum(), homeRequest.getGeneratedTime() - homeRequest1.getGeneratedTime());
+            statisticController.cancelHomeRequest(homeRequest1.getHomeDeviceNum(), homeRequest.getGeneratedTime() - homeRequest1.getGeneratedTime());
             buffer.set(oldestRequestIndex, homeRequest);
             lastRequestIndex = oldestRequestIndex;
             oldestRequestIndex = getNewOldestRequestIndex();
