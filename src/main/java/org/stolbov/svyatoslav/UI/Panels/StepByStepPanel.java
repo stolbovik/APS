@@ -1,10 +1,11 @@
-package org.stolbov.svyatoslav.UI;
+package org.stolbov.svyatoslav.UI.Panels;
 
-import org.stolbov.svyatoslav.Statistics.StatisticController;
 import org.stolbov.svyatoslav.System.Dates.Buffer;
 import org.stolbov.svyatoslav.System.Dates.HomeRequest;
 import org.stolbov.svyatoslav.System.Devices.ProcessingDevice;
 import org.stolbov.svyatoslav.System.GeneralSystem;
+import org.stolbov.svyatoslav.UI.Actions.NextStepAction;
+import org.stolbov.svyatoslav.UI.MainGUI;
 import org.stolbov.svyatoslav.Utils.Action;
 import org.stolbov.svyatoslav.Utils.ActionType;
 
@@ -13,21 +14,21 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class GUI extends JPanel {
-    private GeneralSystem generalSystem;
-    private StatisticController statisticController;
+public class StepByStepPanel extends JPanel {
+    private final MainGUI mainGUI;
+    private final GeneralSystem generalSystem;
     public static String currentRequest;
     public static String oldestRequest;
     public static String completeRequest;
     public static int prevFirstFreeIndex;
     private final Font front1 = new Font("TimesRoman", Font.BOLD, 12);
 
-    public GUI(GeneralSystem generalSystem,
-               StatisticController statisticController) {
-        this.generalSystem = generalSystem;
-        this.statisticController = statisticController;
+    public StepByStepPanel(MainGUI mainGUI) {
+        this.mainGUI = mainGUI;
+        this.generalSystem = mainGUI.getGeneralSystem();
     }
 
+    @Override
     public void paint(Graphics graphics) {
         graphics.setFont(front1);
         this.setBackground(Color.WHITE);
@@ -49,11 +50,12 @@ class GUI extends JPanel {
             graphics.drawLine(570, 25 + i * 50 , 600,25 + i * 50);
             graphics.drawLine(700, 25 + i * 50 , 730,25 + i * 50);
             graphics.drawChars(new char[]{'Д', String.valueOf(i).charAt(0)}, 0, 2, 610, 30 + (i) * 50);
-
         }
+        graphics.drawRect(800, 110, 100, 30);
         graphics.drawLine(570, 25 + 50 * (dc - 1), 570, 25);
         graphics.drawLine(730, 25 + 50 * (dc - 1), 730, 25);
         graphics.drawLine(730, 125, 800, 125);
+        graphics.drawString("Выход", 810, 127);
 
         int bs = generalSystem.getBufferSize();
         for (int i = 0; i < bs; i++) {
@@ -93,6 +95,7 @@ class GUI extends JPanel {
         graphics.drawString("Время: " + time, 850,70);
     }
 
+    @Override
     public void print(Graphics graphics)
     {
         graphics.setFont(front1);
@@ -100,7 +103,7 @@ class GUI extends JPanel {
         this.paint(graphics);
         List<ProcessingDevice> d = generalSystem.getCompanySelectionManager().getProcessingDevices();
         Buffer buffer1 = generalSystem.getBuffer();
-        Action action = UI.NextStepAction.action;
+        Action action = new NextStepAction(mainGUI).action;
 
         if (action.getActionType() == ActionType.NEW_REQUEST) {
             if (prevFirstFreeIndex == -1) {
@@ -121,11 +124,13 @@ class GUI extends JPanel {
         }
 
         if (action.getActionType() == ActionType.REQUEST_COMPLETE) {
-            graphics.setColor(Color.green);
+            graphics.setColor(Color.GREEN);
             graphics.fillRect(601, 11 + (action.getSourceOrDeviceNum()) * 50, 99, 29);
-            graphics.setColor(Color.black);
+            graphics.setColor(Color.YELLOW);
+            graphics.fillRect(801, 111, 98, 28);
+            graphics.setColor(Color.BLACK);
             graphics.drawString("Д" + action.getSourceOrDeviceNum() + "   Свобод.", 610, 30 + ((action.getSourceOrDeviceNum()) * 50));
-            graphics.drawString(completeRequest, 810, 127);
+            graphics.drawString("Выход   " + completeRequest, 810, 127);
         }
 
         for (int i = 0; i < generalSystem.getBufferSize(); i++) {
