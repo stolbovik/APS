@@ -36,7 +36,7 @@ public class GeneralSystem {
                          int maxTime,
                          int minTime,
                          int countRequiredRequest) {
-        this.statisticController = new StatisticController(homeDeviceCount, processingDeviceCount, bufferSize, countRequiredRequest,220000);
+        this.statisticController = new StatisticController(homeDeviceCount, processingDeviceCount, bufferSize, countRequiredRequest);
         this.homeDeviceCount = homeDeviceCount;
         this.processingDeviceCount = processingDeviceCount;
         this.lambda = lambda;
@@ -76,9 +76,9 @@ public class GeneralSystem {
 
                 HomeRequest homeRequest = companyStagingManager.getHomeDevice(sourceOrDeviceNum).getNewHomeRequest(this.timeNow);
 
-                System.out.println("\nType: " + action.getActionType() +
+/*                System.out.println("\nType: " + action.getActionType() +
                         "\nTime: " + action.getActionTime() +
-                        "\nSourceRequestNum: " + homeRequest.getHomeDeviceNum() + "." + homeRequest.getRequestNum() + "\n");
+                        "\nSourceRequestNum: " + homeRequest.getHomeDeviceNum() + "." + homeRequest.getRequestNum() + "\n");*/
 
                 buffer.addRequest(homeRequest, this.statisticController);
                 actions.add(new Action(ActionType.NEW_REQUEST, this.timeNow +
@@ -92,12 +92,12 @@ public class GeneralSystem {
         }
         else if (actionType == ActionType.REQUEST_OUT_BUFFER) {
             int freeDeviceID = companySelectionManager.findFirstFreeProcessingDevice();
-            if (freeDeviceID != -1 && !buffer.isEmpty()) {
+            if (!buffer.isEmpty()) {
                 ProcessingDevice currentProcessingDevice = companySelectionManager.getProcessingDevice(freeDeviceID);
 
-                System.out.println("\nType: " + action.getActionType() +
+/*                System.out.println("\nType: " + action.getActionType() +
                         "\nTime: " + action.getActionTime() +
-                        "\nFreeDevice: " + currentProcessingDevice.getDeviceNum() + "\n");
+                        "\nFreeDevice: " + currentProcessingDevice.getDeviceNum() + "\n");*/
 
                 companySelectionManager.getProcessingDevices().set(freeDeviceID, null);
                 HomeRequest homeRequest = buffer.getRequest();
@@ -109,10 +109,10 @@ public class GeneralSystem {
         else if (actionType == ActionType.REQUEST_COMPLETE) {
             ProcessingDevice currentProcessingDevice = companySelectionManager.getProcessingDevice(sourceOrDeviceNum);
 
-            System.out.println("\nType: " + action.getActionType() +
+/*            System.out.println("\nType: " + action.getActionType() +
                     "\nTime: " + action.getActionTime() +
                     "\nDeviceAndRequest: " + currentProcessingDevice.getDeviceNum() + " "
-                    + currentProcessingDevice.getHomeRequestNow().getHomeDeviceNum() + "." + currentProcessingDevice.getHomeRequestNow().getRequestNum() + "\n");
+                    + currentProcessingDevice.getHomeRequestNow().getHomeDeviceNum() + "." + currentProcessingDevice.getHomeRequestNow().getRequestNum() + "\n");*/
 
             companySelectionManager.getProcessingDevices().set(sourceOrDeviceNum, null);
             statisticController.completeHomeRequest(currentProcessingDevice.getHomeRequestNow().getHomeDeviceNum(), sourceOrDeviceNum,

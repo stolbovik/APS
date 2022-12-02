@@ -20,15 +20,13 @@ public class StatisticController {
     public StatisticController(int homeDeviceCount,
                                int processingDeviceCount,
                                int sizeOfBuffer,
-                               int countRequiredRequest,
-                               double totalTime) {
+                               int countRequiredRequest) {
         this.homeDeviceCount = homeDeviceCount;
         this.processingDeviceCount = processingDeviceCount;
         this.sizeOfBuffer = sizeOfBuffer;
         this.countRequiredRequest = countRequiredRequest;
         this.countSubmittedRequest = 0;
         this.countCompletedRequest = 0;
-/*        this.totalTime = totalTime;*/
         this.homeDeviceStatistics = new ArrayList<>(homeDeviceCount);
         for (int i = 0; i < homeDeviceCount; i++) {
             this.homeDeviceStatistics.add(new HomeDeviceStatistic());
@@ -44,18 +42,17 @@ public class StatisticController {
         this.countSubmittedRequest++;
     };
 
-    public void cancelHomeRequest(int homeDeviceNum, double timeOfUse) {
+    public void cancelHomeRequest(int homeDeviceNum, double timeInSystem) {
         this.homeDeviceStatistics.get(homeDeviceNum).addCountCanceledHomeRequests();
-        this.completeHomeRequest(homeDeviceNum, -1, timeOfUse, 0);
+        this.completeHomeRequest(homeDeviceNum, 0, timeInSystem, 0.0);
     };
 
-    public void completeHomeRequest(int homeDeviceNum, int processingDeviceNum, double usedTime, double timeOfProcessing)
+    public void completeHomeRequest(int homeDeviceNum, int processingDeviceNum, double timeInSystem, double timeInDevice)
     {
-        if (homeDeviceNum == -1) {
-            this.processingDeviceStatistics.get(processingDeviceNum).addWorkTime(timeOfProcessing);
-        }
-        this.homeDeviceStatistics.get(homeDeviceNum).addTotalTime(usedTime);
-        this.homeDeviceStatistics.get(homeDeviceNum).addBufferTime(usedTime - timeOfProcessing);
+        this.processingDeviceStatistics.get(processingDeviceNum).addWorkTime(timeInDevice);
+        this.homeDeviceStatistics.get(homeDeviceNum).addTotalTime(timeInSystem);
+        this.homeDeviceStatistics.get(homeDeviceNum).addBufferTime(timeInSystem - timeInDevice);
+        this.homeDeviceStatistics.get(homeDeviceNum).addTimeInDevice(timeInDevice);
         this.countCompletedRequest++;
     };
 

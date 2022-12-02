@@ -7,12 +7,13 @@ public class HomeDeviceStatistic {
 
     private long countAllGeneratedHomeRequests;
     private long countAllCanceledHomeRequests;
-    private double totalTime;
-    private double totalBufferTime;
+    private double timeInSystem;
+    private double timeInDevice;
+    private double timeInBuffer;
 
     public HomeDeviceStatistic() {
-        this.totalBufferTime = 0;
-        this.totalTime = 0;
+        this.timeInBuffer = 0;
+        this.timeInSystem = 0;
         this.countAllCanceledHomeRequests = 0;
         this.countAllGeneratedHomeRequests = 0;
     }
@@ -26,16 +27,19 @@ public class HomeDeviceStatistic {
     }
 
     public void addTotalTime(double time) {
-        this.totalTime += time;
+        this.timeInSystem += time;
     }
 
     public void addBufferTime(double time) {
-        this.totalBufferTime += time;
+        this.timeInBuffer += time;
+    }
+    public void addTimeInDevice(double time) {
+        this.timeInDevice += time;
     }
 
-    public double getBufferTimeDispersion() { return (this.totalBufferTime * this.totalBufferTime /
-            this.countAllGeneratedHomeRequests - Math.pow(this.totalBufferTime / this.countAllGeneratedHomeRequests, 2)); }
-    public double getTotalTimeDispersion() { return (this.totalTime * this.totalTime / this.countAllGeneratedHomeRequests
-            - Math.pow(this.totalTime / this.countAllGeneratedHomeRequests, 2)); }
+    public double getBufferTimeDispersion() { return (this.timeInBuffer * this.timeInBuffer /
+            this.countAllGeneratedHomeRequests - Math.pow(this.timeInBuffer / this.countAllGeneratedHomeRequests, 2)); }
+    public double getDeviceTimeDispersion() { return (this.timeInDevice * this.timeInDevice / this.countAllGeneratedHomeRequests
+            - Math.pow(this.timeInDevice / this.countAllGeneratedHomeRequests, 2)); }
 
 }
