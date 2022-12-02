@@ -7,13 +7,11 @@ import java.util.ArrayList;
 @Getter
 public class StatisticController {
 
-    private int processingDeviceCount;
-    private int homeDeviceCount;
-    private int countRequiredRequest;
-    private int sizeOfBuffer;
+    private final int processingDeviceCount;
+    private final int homeDeviceCount;
+    private final int countRequiredRequest;
+    private final int sizeOfBuffer;
     private int countSubmittedRequest;
-    private int countCompletedRequest;
-/*    private double totalTime;*/
     private ArrayList<HomeDeviceStatistic> homeDeviceStatistics;
     private ArrayList<ProcessingDeviceStatistic> processingDeviceStatistics;
 
@@ -26,11 +24,18 @@ public class StatisticController {
         this.sizeOfBuffer = sizeOfBuffer;
         this.countRequiredRequest = countRequiredRequest;
         this.countSubmittedRequest = 0;
-        this.countCompletedRequest = 0;
+        initHomeDeviceStatics(this.homeDeviceCount);
+        initProcessingDeviceStatistics(this.processingDeviceCount);
+    }
+
+    private void initHomeDeviceStatics(int homeDeviceCount) {
         this.homeDeviceStatistics = new ArrayList<>(homeDeviceCount);
         for (int i = 0; i < homeDeviceCount; i++) {
             this.homeDeviceStatistics.add(new HomeDeviceStatistic());
         }
+    }
+
+    private void initProcessingDeviceStatistics(int processingDeviceCount) {
         this.processingDeviceStatistics = new ArrayList<>(processingDeviceCount);
         for (int i = 0; i < processingDeviceCount; i++) {
             this.processingDeviceStatistics.add(new ProcessingDeviceStatistic());
@@ -53,7 +58,6 @@ public class StatisticController {
         this.homeDeviceStatistics.get(homeDeviceNum).addTotalTime(timeInSystem);
         this.homeDeviceStatistics.get(homeDeviceNum).addBufferTime(timeInSystem - timeInDevice);
         this.homeDeviceStatistics.get(homeDeviceNum).addTimeInDevice(timeInDevice);
-        this.countCompletedRequest++;
     };
 
 }

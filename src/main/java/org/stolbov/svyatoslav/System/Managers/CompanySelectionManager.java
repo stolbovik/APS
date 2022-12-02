@@ -1,6 +1,7 @@
 package org.stolbov.svyatoslav.System.Managers;
 
 import org.stolbov.svyatoslav.System.Dates.Buffer;
+import org.stolbov.svyatoslav.System.Dates.HomeRequest;
 import org.stolbov.svyatoslav.System.Devices.ProcessingDevice;
 
 import java.util.ArrayList;
@@ -43,5 +44,14 @@ public class CompanySelectionManager {
         }
         return -1;
     };
+    
+    public HomeRequest getHomeRequest() {
+        HomeRequest answer = buffer.getBuffer().get(buffer.getLastRequestIndex());
+        buffer.getBuffer().set(buffer.getLastRequestIndex(), null);
+        buffer.setNewLastRequestIndex();
+        buffer.setNewFirstFreeIndex();
+        buffer.setNewOldestRequestIndex();
+        return answer;
+    }
 
 }

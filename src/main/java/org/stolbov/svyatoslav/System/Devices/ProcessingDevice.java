@@ -5,10 +5,10 @@ import org.stolbov.svyatoslav.System.Dates.HomeRequest;
 @Getter
 public class ProcessingDevice {
 
-    private int deviceNum;
+    private final int deviceNum;
     private HomeRequest homeRequestNow;
-    private long minTime;
-    private long maxTime;
+    private final long minTime;
+    private final long maxTime;
     private double startTimeHomeRequest;
 
     public ProcessingDevice(int deviceNum,

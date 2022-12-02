@@ -14,6 +14,7 @@ public class HomeDeviceStatistic {
     public HomeDeviceStatistic() {
         this.timeInBuffer = 0;
         this.timeInSystem = 0;
+        this.timeInDevice = 0;
         this.countAllCanceledHomeRequests = 0;
         this.countAllGeneratedHomeRequests = 0;
     }

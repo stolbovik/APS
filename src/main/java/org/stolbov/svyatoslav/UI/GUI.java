@@ -20,7 +20,7 @@ class GUI extends JPanel {
     public static String oldestRequest;
     public static String completeRequest;
     public static int prevFirstFreeIndex;
-    private final Font f1 = new Font("TimesRoman", Font.BOLD, 12);
+    private final Font front1 = new Font("TimesRoman", Font.BOLD, 12);
 
     public GUI(GeneralSystem generalSystem,
                StatisticController statisticController) {
@@ -28,120 +28,120 @@ class GUI extends JPanel {
         this.statisticController = statisticController;
     }
 
-    public void paint(Graphics g) {
-        g.setFont(f1);
+    public void paint(Graphics graphics) {
+        graphics.setFont(front1);
         this.setBackground(Color.WHITE);
         for (int i = 10; i <=60; i += 50) {
-            g.drawRect(20, i, 100, 30);
-            g.drawLine(120, i + 15, 150, i + 15);
+            graphics.drawRect(20, i, 100, 30);
+            graphics.drawLine(120, i + 15, 150, i + 15);
         }
         for (int i = 115; i <=165; i+= 25) {
-            g.drawOval(65, i, 1, 1);
+            graphics.drawOval(65, i, 1, 1);
         }
-        g.drawRect(20, 190, 100, 30);
-        g.drawString("И0", 30, 30);
-        g.drawString("И1", 30, 80);
-        g.drawString("И" + String.valueOf(generalSystem.getHomeDeviceCount() - 1), 30, 210);
+        graphics.drawRect(20, 190, 100, 30);
+        graphics.drawString("И0", 30, 30);
+        graphics.drawString("И1", 30, 80);
+        graphics.drawString("И" + String.valueOf(generalSystem.getHomeDeviceCount() - 1), 30, 210);
 
         int dc = generalSystem.getProcessingDeviceCount();
         for (int i = 0; i < dc; i++) {
-            g.drawRect(600, 10 + (i) * 50, 100, 30);
-            g.drawLine(570, 25 + i * 50 , 600,25 + i * 50);
-            g.drawLine(700, 25 + i * 50 , 730,25 + i * 50);
-            g.drawChars(new char[]{'Д', String.valueOf(i).charAt(0)}, 0, 2, 610, 30 + (i) * 50);
+            graphics.drawRect(600, 10 + (i) * 50, 100, 30);
+            graphics.drawLine(570, 25 + i * 50 , 600,25 + i * 50);
+            graphics.drawLine(700, 25 + i * 50 , 730,25 + i * 50);
+            graphics.drawChars(new char[]{'Д', String.valueOf(i).charAt(0)}, 0, 2, 610, 30 + (i) * 50);
 
         }
-        g.drawLine(570, 25 + 50 * (dc - 1), 570, 25);
-        g.drawLine(730, 25 + 50 * (dc - 1), 730, 25);
-        g.drawLine(730, 125, 800, 125);
+        graphics.drawLine(570, 25 + 50 * (dc - 1), 570, 25);
+        graphics.drawLine(730, 25 + 50 * (dc - 1), 730, 25);
+        graphics.drawLine(730, 125, 800, 125);
 
         int bs = generalSystem.getBufferSize();
         for (int i = 0; i < bs; i++) {
-            g.drawRect(310, 10 + (i + 1) * 50, 100, 30);
-            g.drawLine(360, 40 + i * 50 , 360,40 + i * 50 + 20);
-            g.drawChars(new char[]{'Б', String.valueOf(i).charAt(0)}, 0, 2, 320, 30 + (i + 1) * 50);
+            graphics.drawRect(310, 10 + (i + 1) * 50, 100, 30);
+            graphics.drawLine(360, 40 + i * 50 , 360,40 + i * 50 + 20);
+            graphics.drawChars(new char[]{'Б', String.valueOf(i).charAt(0)}, 0, 2, 320, 30 + (i + 1) * 50);
 
         }
 
-        g.drawLine(120, 25, 180, 25);
-        g.drawLine(120, 195, 150, 195);
-        g.drawLine(150, 195, 150, 25);
+        graphics.drawLine(120, 25, 180, 25);
+        graphics.drawLine(120, 195, 150, 195);
+        graphics.drawLine(150, 195, 150, 25);
 
-        g.drawRect(180, 10, 100, 30);
-        g.drawLine(280, 25, 310, 25);
+        graphics.drawRect(180, 10, 100, 30);
+        graphics.drawLine(280, 25, 310, 25);
 
-        g.drawRect(310, 10, 100, 30);
-        g.drawLine(410, 25, 440, 25);
+        graphics.drawRect(310, 10, 100, 30);
+        graphics.drawLine(410, 25, 440, 25);
 
-        g.drawRect(440, 10, 100, 30);
-        g.drawLine(540, 25, 570, 25);
+        graphics.drawRect(440, 10, 100, 30);
+        graphics.drawLine(540, 25, 570, 25);
 
-        g.drawRect(180, 60, 100, 30);
-        g.drawLine(230, 40, 230, 60);
+        graphics.drawRect(180, 60, 100, 30);
+        graphics.drawLine(230, 40, 230, 60);
 
-        g.drawString("ДП", 190, 30);
-        g.drawString("БП", 320, 30);
-        g.drawString("ДВ", 450, 30);
+        graphics.drawString("ДП", 190, 30);
+        graphics.drawString("БП", 320, 30);
+        graphics.drawString("ДВ", 450, 30);
 
-        g.drawString("Отказ", 190, 80);
+        graphics.drawString("Отказ", 190, 80);
         String time = String.valueOf(generalSystem.getTimeNow());
         try {
             time = time.substring(0, time.indexOf('.') + 4);
         } catch (Exception e) {
 
         }
-        g.drawString("Время: " + time, 850,70);
+        graphics.drawString("Время: " + time, 850,70);
     }
 
-    public void print(Graphics g)
+    public void print(Graphics graphics)
     {
-        g.setFont(f1);
-        g.clearRect(0, 0, 1000, 400);
-        this.paint(g);
+        graphics.setFont(front1);
+        graphics.clearRect(0, 0, 1000, 400);
+        this.paint(graphics);
         List<ProcessingDevice> d = generalSystem.getCompanySelectionManager().getProcessingDevices();
-        Buffer b = generalSystem.getBuffer();
+        Buffer buffer1 = generalSystem.getBuffer();
         Action action = UI.NextStepAction.action;
 
         if (action.getActionType() == ActionType.NEW_REQUEST) {
             if (prevFirstFreeIndex == -1) {
-                g.setColor(Color.PINK);
-                g.fillRect(181, 61, 99, 29);
-                g.setColor(Color.black);
-                g.drawString("Отказ " + oldestRequest, 190, 80);
+                graphics.setColor(Color.PINK);
+                graphics.fillRect(181, 61, 99, 29);
+                graphics.setColor(Color.black);
+                graphics.drawString("Отказ " + oldestRequest, 190, 80);
             }
-            g.setColor(Color.CYAN);
-            if (b.getFirstFreeIndex() == -1) {
-                g.fillRect(311, 11 + (b.getLastRequestIndex() + 1) * 50, 99, 29);
+            graphics.setColor(Color.CYAN);
+            if (buffer1.getFirstFreeIndex() == -1) {
+                graphics.fillRect(311, 11 + (buffer1.getLastRequestIndex() + 1) * 50, 99, 29);
 
             } else {
-                g.fillRect(311, 11 + (b.getFirstFreeIndex()) * 50, 99, 29);
+                graphics.fillRect(311, 11 + (buffer1.getFirstFreeIndex()) * 50, 99, 29);
             }
-            g.setColor(Color.black);
-            g.drawString(currentRequest, 220, 30);
+            graphics.setColor(Color.black);
+            graphics.drawString(currentRequest, 220, 30);
         }
 
         if (action.getActionType() == ActionType.REQUEST_COMPLETE) {
-            g.setColor(Color.green);
-            g.fillRect(601, 11 + (action.getSourceOrDeviceNum()) * 50, 99, 29);
-            g.setColor(Color.black);
-            g.drawString("Д" + action.getSourceOrDeviceNum() + "   Свобод.", 610, 30 + ((action.getSourceOrDeviceNum()) * 50));
-            g.drawString(completeRequest, 810, 127);
+            graphics.setColor(Color.green);
+            graphics.fillRect(601, 11 + (action.getSourceOrDeviceNum()) * 50, 99, 29);
+            graphics.setColor(Color.black);
+            graphics.drawString("Д" + action.getSourceOrDeviceNum() + "   Свобод.", 610, 30 + ((action.getSourceOrDeviceNum()) * 50));
+            graphics.drawString(completeRequest, 810, 127);
         }
 
         for (int i = 0; i < generalSystem.getBufferSize(); i++) {
-            ArrayList<HomeRequest> buffer = b.getBuffer();
+            ArrayList<HomeRequest> buffer = buffer1.getBuffer();
             if (!(buffer.get(i) == null)) {
                 String id = "Б" + i + "     " + buffer.get(i).getHomeDeviceNum() + "." + (buffer.get(i).getRequestNum());
-                g.drawString(id, 320, 30 + (i + 1) * 50);
+                graphics.drawString(id, 320, 30 + (i + 1) * 50);
             }
-            if (b.getOldestRequestIndex() == i) {
-                g.drawString("O", 390, 25 + (i + 1) * 50);
+            if (buffer1.getOldestRequestIndex() == i) {
+                graphics.drawString("O", 390, 25 + (i + 1) * 50);
             }
-            if (b.getLastRequestIndex() == i) {
-                g.drawString("L", 390, 35 + (i + 1) * 50);
+            if (buffer1.getLastRequestIndex() == i) {
+                graphics.drawString("L", 390, 35 + (i + 1) * 50);
             }
-            if (b.getFirstFreeIndex() == i) {
-                g.drawString("FF", 390, 30 + (i + 1)* 50);
+            if (buffer1.getFirstFreeIndex() == i) {
+                graphics.drawString("FF", 390, 30 + (i + 1)* 50);
             }
         }
 
@@ -149,7 +149,7 @@ class GUI extends JPanel {
         for (int i = 0; i < generalSystem.getProcessingDeviceCount(); i++) {
             ProcessingDevice temp = d.get(i);
             if (!temp.isFree()) {
-                g.drawString(temp.getHomeRequestNow().getHomeDeviceNum() + "." + temp.getHomeRequestNow().getRequestNum(), 650, 30 + (i) * 50);
+                graphics.drawString(temp.getHomeRequestNow().getHomeDeviceNum() + "." + temp.getHomeRequestNow().getRequestNum(), 650, 30 + (i) * 50);
             }
         }
 

@@ -76,6 +76,8 @@ public class UI {
         static Action action = null;
         static double time = 0;
         static int temp = 0;
+        static String tempString;
+        static ActionType prevActionType;
         @Override
         public void actionPerformed(ActionEvent e) {
             if (temp == 0) {
@@ -88,13 +90,25 @@ public class UI {
                         + generalSystem.getBuffer().getBuffer().get(generalSystem.getBuffer()
                         .getOldestRequestIndex()).getRequestNum();
             }
-            if (generalSystem.getNextAction().getActionType() == ActionType.REQUEST_COMPLETE) {
+            if (generalSystem.getNextAction().getActionType() == ActionType.REQUEST_COMPLETE &&
+                action.getActionType() != ActionType.REQUEST_COMPLETE) {
                 GUI.completeRequest = generalSystem.getCompanySelectionManager()
                         .getProcessingDevice(generalSystem.getNextAction().getSourceOrDeviceNum()).getHomeRequestNow()
                         .getHomeDeviceNum() + "." + generalSystem.getCompanySelectionManager()
                         .getProcessingDevice(generalSystem.getNextAction().getSourceOrDeviceNum()).getHomeRequestNow()
                         .getRequestNum();
             }
+            if (action.getActionType() == ActionType.REQUEST_COMPLETE && prevActionType == ActionType.REQUEST_COMPLETE) {
+                GUI.completeRequest = tempString;
+            }
+            if (generalSystem.getNextAction().getActionType() == ActionType.REQUEST_COMPLETE) {
+                tempString = generalSystem.getCompanySelectionManager()
+                        .getProcessingDevice(generalSystem.getNextAction().getSourceOrDeviceNum()).getHomeRequestNow()
+                        .getHomeDeviceNum() + "." + generalSystem.getCompanySelectionManager()
+                        .getProcessingDevice(generalSystem.getNextAction().getSourceOrDeviceNum()).getHomeRequestNow()
+                        .getRequestNum();
+            }
+            prevActionType = action.getActionType();
             if (temp != 0) {
                 action = generalSystem.startAction();
             }
