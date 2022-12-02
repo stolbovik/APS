@@ -194,7 +194,7 @@ public class UI {
         panel.add(text7);
 
         JButton button = new JButton(new SetDataAction());
-        button.setText("submit");
+        button.setText("Начать");
 
         panel.add(button);
         frame.setSize(500, 400);
