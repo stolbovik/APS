@@ -4,8 +4,12 @@ package org.stolbov.svyatoslav;
 import org.stolbov.svyatoslav.UI.MainGUI;
 
 public class Application {
-    public static void main( String[] args ) throws InterruptedException {
+    public static void main(String[] args) {
         MainGUI mainGUI = new MainGUI();
-        mainGUI.execute();
+        try {
+            mainGUI.execute();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

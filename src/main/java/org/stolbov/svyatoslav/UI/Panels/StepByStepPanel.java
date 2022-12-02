@@ -42,7 +42,7 @@ public class StepByStepPanel extends JPanel {
         graphics.drawRect(20, 190, 100, 30);
         graphics.drawString("И0", 30, 30);
         graphics.drawString("И1", 30, 80);
-        graphics.drawString("И" + String.valueOf(generalSystem.getHomeDeviceCount() - 1), 30, 210);
+        graphics.drawString("И" + (generalSystem.getHomeDeviceCount() - 1), 30, 210);
 
         int dc = generalSystem.getProcessingDeviceCount();
         for (int i = 0; i < dc; i++) {
@@ -150,14 +150,11 @@ public class StepByStepPanel extends JPanel {
             }
         }
 
-
         for (int i = 0; i < generalSystem.getProcessingDeviceCount(); i++) {
             ProcessingDevice temp = d.get(i);
             if (!temp.isFree()) {
                 graphics.drawString(temp.getHomeRequestNow().getHomeDeviceNum() + "." + temp.getHomeRequestNow().getRequestNum(), 650, 30 + (i) * 50);
             }
         }
-
-
     }
 }

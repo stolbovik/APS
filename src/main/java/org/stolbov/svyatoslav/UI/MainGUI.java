@@ -14,7 +14,6 @@ public class MainGUI {
     private StartFrame startFrame;
     private ModeFrame modeFrame;
     private JFrame stepModeFrame;
-
     private GeneralSystem generalSystem;
     StatisticController statisticController;
 

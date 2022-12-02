@@ -2,6 +2,8 @@ package org.stolbov.svyatoslav.System.Devices;
 import lombok.Getter;
 import org.stolbov.svyatoslav.System.Dates.HomeRequest;
 
+import java.util.Random;
+
 @Getter
 public class ProcessingDevice {
 
@@ -25,11 +27,7 @@ public class ProcessingDevice {
                                  double startTimeHomeRequest) {
         this.startTimeHomeRequest = startTimeHomeRequest;
         this.homeRequestNow = homeRequest;
-        double temp = 0.0;
-        while (temp == 0.0) {
-            temp = Math.random();
-        }
-        return temp + this.minTime;
+        return this.minTime + Math.random() * (this.maxTime - this.minTime);
     }
 
     public boolean isFree() {

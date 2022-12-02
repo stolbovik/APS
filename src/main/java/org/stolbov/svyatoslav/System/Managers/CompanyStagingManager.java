@@ -34,7 +34,8 @@ public class CompanyStagingManager {
     public void addHomeRequestInBuffer(HomeRequest homeRequest) {
         if (buffer.getFirstFreeIndex() == -1) {
             HomeRequest homeRequest1 = buffer.getBuffer().get(buffer.getOldestRequestIndex());
-            statisticController.cancelHomeRequest(homeRequest1.getHomeDeviceNum(), homeRequest.getGeneratedTime() - homeRequest1.getGeneratedTime());
+            statisticController.cancelHomeRequest(homeRequest1.getHomeDeviceNum(),
+                    homeRequest.getGeneratedTime() - homeRequest1.getGeneratedTime());
             buffer.getBuffer().set(buffer.getOldestRequestIndex(), homeRequest);
             buffer.setLastRequestIndex(buffer.getOldestRequestIndex());
             buffer.setNewOldestRequestIndex();
