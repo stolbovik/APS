@@ -14,14 +14,14 @@ public class CompanySelectionManager {
 
     public CompanySelectionManager(Buffer buffer,
                                    int processingDeviceCount,
-                                   int minTime,
-                                   int maxTime) {
+                                   double minTime,
+                                   double maxTime) {
         this.buffer = buffer;
         this.processingDeviceCount = processingDeviceCount;
         initArrayOfDevice(minTime, maxTime);
     }
 
-    private void initArrayOfDevice(int minTime, int maxTime) {
+    private void initArrayOfDevice(double minTime, double maxTime) {
         processingDevices = new ArrayList<>(processingDeviceCount);
         for (int i = 0; i < processingDeviceCount; i++) {
             processingDevices.add(new ProcessingDevice(i, minTime,maxTime));

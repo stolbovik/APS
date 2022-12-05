@@ -9,13 +9,13 @@ public class ProcessingDevice {
 
     private final int deviceNum;
     private HomeRequest homeRequestNow;
-    private final long minTime;
-    private final long maxTime;
+    private final double minTime;
+    private final double maxTime;
     private double startTimeHomeRequest;
 
     public ProcessingDevice(int deviceNum,
-                            long minTime,
-                            long maxTime) {
+                            double minTime,
+                            double maxTime) {
         this.deviceNum = deviceNum;
         this.minTime = minTime;
         this.maxTime = maxTime;

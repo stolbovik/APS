@@ -25,16 +25,16 @@ public class GeneralSystem {
     private CompanyStagingManager companyStagingManager;
     private ArrayList<Action> actions;
     private double lambda;
-    private int minTime;
-    private int maxTime;
+    private double minTime;
+    private double maxTime;
     private int bufferSize;
 
     public GeneralSystem(int homeDeviceCount,
                          int processingDeviceCount,
                          int bufferSize,
                          double lambda,
-                         int maxTime,
-                         int minTime,
+                         double maxTime,
+                         double minTime,
                          int countRequiredRequest) {
         this.statisticController = new StatisticController(homeDeviceCount, processingDeviceCount, bufferSize, countRequiredRequest);
         this.homeDeviceCount = homeDeviceCount;

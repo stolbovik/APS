@@ -30,11 +30,11 @@ public class StartFrame extends BaseFrame{
     protected void addPanelToFrame() {
         JPanel panel = new JPanel();
         add(panel);
-        JLabel label1 = new JLabel("Количество девайсов");
+        JLabel label1 = new JLabel("Количество приборов");
         label1.setPreferredSize(new Dimension(200, 40));
-        JLabel label2 = new JLabel("Количество источников");
+        JLabel label2 = new JLabel("Количество домов");
         label2.setPreferredSize(new Dimension(200, 40));
-        JLabel label3 = new JLabel("Количество действий");
+        JLabel label3 = new JLabel("Количество запросов");
         label3.setPreferredSize(new Dimension(200, 40));
         JLabel label4 = new JLabel("Размер буффера");
         label4.setPreferredSize(new Dimension(200, 40));
@@ -57,13 +57,13 @@ public class StartFrame extends BaseFrame{
         JTextField text4 = new JTextField("4", 20);
         panel.add(text4);
         panel.add(label5);
-        JTextField text5 = new JTextField("0", 20);
+        JTextField text5 = new JTextField("0.1", 20);
         panel.add(text5);
         panel.add(label6);
-        JTextField text6 = new JTextField("1", 20);
+        JTextField text6 = new JTextField("0.4", 20);
         panel.add(text6);
         panel.add(label7);
-        JTextField text7 = new JTextField("3", 20);
+        JTextField text7 = new JTextField("2", 20);
         panel.add(text7);
         JButton button = new JButton(new SetDataAction());
         button.setText("Начать");
@@ -86,8 +86,8 @@ public class StartFrame extends BaseFrame{
                     Integer.parseInt(startDataFields.get(0).getText()),
                     Integer.parseInt(startDataFields.get(3).getText()),
                     Double.parseDouble(startDataFields.get(6).getText()),
-                    Integer.parseInt(startDataFields.get(5).getText()),
-                    Integer.parseInt(startDataFields.get(4).getText()),
+                    Double.parseDouble(startDataFields.get(5).getText()),
+                    Double.parseDouble(startDataFields.get(4).getText()),
                     Integer.parseInt(startDataFields.get(2).getText()));
             statisticController = generalSystem.getStatisticController();
             setVisible(false);
